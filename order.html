@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>สั่งอาหาร</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;700&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/order.css" />
+</head>
+<body class="order-page-body">
+
+  <header class="order-header">
+    <h1 id="oc-shop-name">ร้านลูกชิ้น</h1>
+    <p class="muted">สั่งอาหารจากโต๊ะของคุณ</p>
+  </header>
+
+  <main class="order-main">
+
+    <!-- ขั้นที่ 1: กรอกโต๊ะ + ชื่อ -->
+    <section id="oc-step-info" class="oc-step">
+      <div class="oc-card">
+        <label>เลขโต๊ะของคุณ</label>
+        <input id="oc-table-no" type="text" inputmode="numeric" placeholder="เช่น 5" />
+        <label>ชื่อผู้สั่ง</label>
+        <input id="oc-customer-name" type="text" placeholder="เช่น น้องเอ" />
+        <button id="oc-start-btn">เริ่มสั่งอาหาร</button>
+      </div>
+    </section>
+
+    <!-- ขั้นที่ 2: เลือกเมนู -->
+    <section id="oc-step-menu" class="oc-step hidden">
+      <div class="oc-info-bar">
+        โต๊ะ <strong id="oc-info-table"></strong> · <span id="oc-info-name"></span>
+      </div>
+      <div id="oc-menu-grid" class="menu-grid"></div>
+    </section>
+
+    <!-- ขั้นที่ 3: ส่งออเดอร์แล้ว -->
+    <section id="oc-step-done" class="oc-step hidden">
+      <div class="oc-card oc-done-card">
+        <div class="oc-done-icon">✅</div>
+        <h2>ส่งออเดอร์แล้ว!</h2>
+        <p>โต๊ะ <strong id="oc-done-table"></strong> · <span id="oc-done-name"></span></p>
+        <p class="muted">รอแม่ค้าทำอาหารสักครู่ พร้อมแล้วจะนำไปส่งที่โต๊ะนะคะ/ครับ</p>
+        <p class="oc-done-total">รวม <span id="oc-done-total"></span> บาท (จ่ายหน้าร้าน)</p>
+        <button id="oc-new-order-btn">สั่งเพิ่มอีกรายการ</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- แถบตะกร้าด้านล่าง (เฉพาะตอนเลือกเมนู) -->
+  <div id="oc-cart-bar" class="oc-cart-bar hidden">
+    <button id="oc-open-cart-btn">
+      🛒 <span id="oc-cart-count">0</span> รายการ — <span id="oc-cart-total">0.00</span> ฿
+    </button>
+  </div>
+
+  <!-- ตะกร้า (drawer) -->
+  <div id="oc-cart-drawer" class="cart-drawer">
+    <div class="cart-drawer-header">
+      <h2>ตะกร้าของคุณ</h2>
+      <button id="oc-close-cart-btn" class="icon-btn">✕</button>
+    </div>
+    <div id="oc-cart-lines" class="cart-lines"></div>
+    <div class="cart-drawer-footer">
+      <div class="cart-total-row">
+        <span>รวม</span>
+        <span id="oc-drawer-total">0.00</span> ฿
+      </div>
+      <button id="oc-submit-order-btn" disabled>ส่งออเดอร์</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/customer-order.js"></script>
+</body>
+</html>

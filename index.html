@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>POS ร้านลูกชิ้น</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;700&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-icon">🍢</span>
+      <h1 id="shop-name-header">ร้านลูกชิ้น</h1>
+    </div>
+    <nav class="main-nav">
+      <button class="nav-btn" data-view="pos">ขายของ</button>
+      <button class="nav-btn" data-view="orders">ออเดอร์ <span id="order-queue-badge" class="badge">0</span></button>
+      <button class="nav-btn" data-view="dashboard">แดชบอร์ด</button>
+      <button class="nav-btn" data-view="settings">ตั้งค่า</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ===== POS VIEW ===== -->
+    <section id="view-pos" class="view">
+      <div id="menu-grid" class="menu-grid"></div>
+    </section>
+
+    <!-- ===== ORDER QUEUE VIEW ===== -->
+    <section id="view-orders" class="view">
+      <h2 class="section-title">ออเดอร์ที่ลูกค้าสั่งเองรอทำ</h2>
+      <div id="order-queue-list" class="order-queue-list"></div>
+    </section>
+
+    <!-- ===== DASHBOARD VIEW ===== -->
+    <section id="view-dashboard" class="view">
+      <div class="range-switcher">
+        <button class="range-btn active" data-range="today">วันนี้</button>
+        <button class="range-btn" data-range="week">7 วัน</button>
+        <button class="range-btn" data-range="month">30 วัน</button>
+      </div>
+      <div id="dashboard-summary" class="stat-cards"></div>
+      <div class="dashboard-panel">
+        <h3>ยอดขายรายวัน</h3>
+        <canvas id="revenue-chart" width="600" height="220"></canvas>
+      </div>
+      <div class="dashboard-panel">
+        <h3>เมนูขายดี</h3>
+        <div id="dashboard-top-items"></div>
+      </div>
+    </section>
+
+    <!-- ===== SETTINGS VIEW ===== -->
+    <section id="view-settings" class="view">
+      <div id="settings-pin-gate" class="pin-gate">
+        <h2>ใส่รหัสเพื่อเข้าตั้งค่า</h2>
+        <input type="password" id="settings-pin-input" maxlength="10" placeholder="รหัสผ่าน" />
+        <button id="settings-pin-submit">เข้าสู่ระบบ</button>
+        <p id="settings-pin-error" class="error"></p>
+      </div>
+
+      <div id="settings-content" class="hidden">
+        <div class="settings-panel">
+          <h3>QR สำหรับลูกค้าสั่งเอง</h3>
+          <p class="muted">ปริ้น QR นี้ไปติดที่โต๊ะ (ใช้ใบเดียวกันได้ทุกโต๊ะ ลูกค้าจะกรอกเลขโต๊ะเอง)</p>
+          <div id="order-page-qr" class="order-page-qr"></div>
+          <p class="order-page-link"><span id="order-page-url"></span></p>
+        </div>
+
+        <div class="settings-panel">
+          <h3>ข้อมูลร้าน</h3>
+          <label>ชื่อร้าน</label>
+          <input id="setting-shop-name" type="text" />
+
+          <label>เลขพร้อมเพย์ (เบอร์โทร หรือเลขบัตรประชาชน)</label>
+          <input id="setting-promptpay-id" type="text" placeholder="เช่น 0812345678" />
+
+          <label>รหัสผ่านเข้าหน้าตั้งค่า</label>
+          <input id="setting-pin-code" type="text" maxlength="10" />
+
+          <button id="save-shop-settings-btn">บันทึกการตั้งค่า</button>
+        </div>
+
+        <div class="settings-panel">
+          <h3>จัดการเมนู</h3>
+          <div id="menu-manager-list"></div>
+
+          <div class="new-menu-form">
+            <input id="new-menu-name" type="text" placeholder="ชื่อเมนู" />
+            <input id="new-menu-category" type="text" placeholder="หมวดหมู่" />
+            <input id="new-menu-price" type="number" step="0.01" placeholder="ราคา" />
+            <button id="add-menu-item-btn">เพิ่มเมนู</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== CART FAB + DRAWER ===== -->
+  <button id="cart-fab" class="cart-fab">
+    🛒 <span id="cart-count">0</span>
+  </button>
+
+  <div id="cart-drawer" class="cart-drawer">
+    <div class="cart-drawer-header">
+      <h2>ตะกร้า</h2>
+      <button id="close-cart-btn" class="icon-btn">✕</button>
+    </div>
+    <div id="cart-lines" class="cart-lines"></div>
+    <div class="cart-drawer-footer">
+      <div class="cart-total-row">
+        <span>รวม</span>
+        <span id="cart-total">0.00</span> ฿
+      </div>
+      <button id="open-checkout-btn" disabled>ไปชำระเงิน</button>
+    </div>
+  </div>
+
+  <!-- ===== CHECKOUT MODAL ===== -->
+  <div id="checkout-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>ยืนยันการชำระเงิน</h2>
+        <button id="close-checkout-btn" class="icon-btn">✕</button>
+      </div>
+      <p class="checkout-total-display"><span id="checkout-total">0.00</span> บาท</p>
+      <div class="payment-method-choice">
+        <label><input type="radio" name="payment-method" value="cash" /> เงินสด</label>
+        <label><input type="radio" name="payment-method" value="qr" /> QR พร้อมเพย์</label>
+      </div>
+      <button id="confirm-checkout-btn">ยืนยันรับเงิน</button>
+    </div>
+  </div>
+
+  <!-- ===== RECEIPT MODAL ===== -->
+  <div id="receipt-modal" class="modal-overlay">
+    <div class="modal-box receipt-modal-box">
+      <div class="modal-header no-print">
+        <h2>ใบเสร็จ</h2>
+        <button id="close-receipt-btn" class="icon-btn">✕</button>
+      </div>
+      <div id="receipt-content" class="receipt-paper"></div>
+      <button id="print-receipt-btn" class="no-print">🖨️ พิมพ์ใบเสร็จ</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/promptpay.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/pos.js"></script>
+  <script src="js/orders-queue.js"></script>
+  <script src="js/checkout.js"></script>
+  <script src="js/receipt.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
