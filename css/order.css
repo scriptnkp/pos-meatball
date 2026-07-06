@@ -40,7 +40,41 @@
 
 .oc-done-card { text-align: center; }
 .oc-done-icon { font-size: 2.6rem; margin-bottom: 8px; }
-.oc-done-total { font-family: var(--font-display); font-weight: 700; color: var(--color-primary); font-size: 1.1rem; }
+.oc-done-total {
+  font-family: var(--font-display); font-weight: 700;
+  color: var(--color-primary); font-size: 1.2rem; margin: 6px 0;
+}
+
+/* วิธีชำระเงินที่ลูกค้าเลือก */
+.oc-done-payment-label {
+  display: inline-block;
+  padding: 7px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 8px 0 14px;
+}
+.oc-done-payment-label.pay-qr   { background: #E3F2FD; color: #1565C0; }
+.oc-done-payment-label.pay-cash { background: #F1F8E9; color: #33691E; }
+
+/* QR พร้อมเพย์ในหน้าเสร็จ */
+.oc-done-qr {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 16px;
+}
+.oc-done-qr.hidden { display: none; }
+.oc-done-qr img, .oc-done-qr canvas {
+  border: 6px solid white;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  border-radius: 10px;
+}
+
+/* ปุ่มสั่งเพิ่ม */
+#oc-new-order-btn {
+  background: var(--color-accent);
+  margin-top: 14px;
+}
 
 .oc-cart-bar {
   position: fixed; bottom: 0; left: 0; right: 0;
@@ -53,3 +87,47 @@
   width: 100%; padding: 14px; border: none; border-radius: var(--radius);
   background: var(--color-primary); color: white; font-family: var(--font-display); font-size: 1rem; cursor: pointer;
 }
+
+/* ============================================
+   Payment method modal (ลูกค้าเลือกวิธีจ่าย)
+   ============================================ */
+.oc-payment-box {
+  text-align: center;
+  padding: 28px 22px;
+}
+.oc-payment-box h2 {
+  font-size: 1.15rem;
+  margin-bottom: 6px;
+}
+.oc-payment-amount {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 4px 0 22px;
+}
+.oc-payment-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.oc-pay-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px 20px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  transition: border-color 0.15s, background 0.15s;
+}
+.oc-pay-btn:active { transform: scale(0.98); }
+#oc-pay-qr   { border-color: #1565C0; color: #1565C0; background: #E3F2FD; }
+#oc-pay-cash { border-color: #33691E; color: #33691E; background: #F1F8E9; }
+.oc-pay-icon { font-size: 1.5rem; }

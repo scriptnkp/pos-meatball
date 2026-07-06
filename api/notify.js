@@ -27,7 +27,7 @@ export default async function handler(req, res) {
       : `🛒 ออเดอร์ใหม่ - ${shopName || 'ร้านลูกชิ้น'}`;
     const tableLine = isCustomerOrder ? `โต๊ะ: ${tableNo || '-'}  ชื่อผู้สั่ง: ${customerName || '-'}\n` : '';
     const paymentLine = isCustomerOrder
-      ? 'ชำระโดย: จ่ายหน้าร้าน'
+      ? `ชำระโดย: ${paymentMethod === 'qr' ? 'โอน QR พร้อมเพย์' : 'จ่ายหน้าร้าน (เงินสด)'}`
       : `ชำระโดย: ${paymentMethod === 'qr' ? 'QR พร้อมเพย์' : 'เงินสด'}`;
 
     const text =

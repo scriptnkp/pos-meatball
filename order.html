@@ -44,12 +44,32 @@
         <h2>ส่งออเดอร์แล้ว!</h2>
         <p>โต๊ะ <strong id="oc-done-table"></strong> · <span id="oc-done-name"></span></p>
         <p class="muted">รอแม่ค้าทำอาหารสักครู่ พร้อมแล้วจะนำไปส่งที่โต๊ะนะคะ/ครับ</p>
-        <p class="oc-done-total">รวม <span id="oc-done-total"></span> บาท (จ่ายหน้าร้าน)</p>
+        <p class="oc-done-total">รวม <span id="oc-done-total"></span> บาท</p>
+        <div id="oc-done-payment-label" class="oc-done-payment-label"></div>
+        <div id="oc-done-qr" class="oc-done-qr hidden"></div>
         <button id="oc-new-order-btn">สั่งเพิ่มอีกรายการ</button>
       </div>
     </section>
 
   </main>
+
+  <!-- modal เลือกวิธีชำระเงิน -->
+  <div id="oc-payment-modal" class="modal-overlay">
+    <div class="modal-box oc-payment-box">
+      <h2>เลือกวิธีชำระเงิน</h2>
+      <p class="oc-payment-amount">รวม <span id="oc-pay-amount">0.00</span> บาท</p>
+      <div class="oc-payment-choices">
+        <button class="oc-pay-btn" id="oc-pay-qr">
+          <span class="oc-pay-icon">📲</span>
+          <span>จ่ายผ่าน QR พร้อมเพย์</span>
+        </button>
+        <button class="oc-pay-btn" id="oc-pay-cash">
+          <span class="oc-pay-icon">💵</span>
+          <span>จ่ายหน้าร้าน (เงินสด)</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- แถบตะกร้าด้านล่าง (เฉพาะตอนเลือกเมนู) -->
   <div id="oc-cart-bar" class="oc-cart-bar hidden">
@@ -75,8 +95,10 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="js/config.js"></script>
   <script src="js/api.js"></script>
+  <script src="js/promptpay.js"></script>
   <script src="js/cart.js"></script>
   <script src="js/customer-order.js"></script>
 </body>
